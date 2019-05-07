@@ -1,0 +1,85 @@
+version : '3'
+
+services : 
+  nginx:
+    build: 
+      context: .
+      dockerfile: ./docker/nginx-dev/Dockerfile
+    image: creating_digital/nginx:1.0.0
+    volumes: 
+      - c:/Users/koled/dev/projects/github.com/creating_digital/interview/app/:/var/www/html
+    ports:
+      - 80:80
+    networks: 
+      - appnet
+    depends_on:
+      - php-fpm
+    restart: unless-stopped
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+      args: 
+      - IS_DEV="true"
+    image: bandmates/php-fpm:1.1.0
+    volumes: 
+      - c:/Users/koled/dev/projects/github.com/creating_digital/interview/app/:/var/www/html
+    networks: 
+      - appnet
+    restart: unless-stopped
+
+  # workspace:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/php-workspace/Dockerfile
+  #   image: bandmates/workspace:1.0.0
+  #   volumes: 
+  #     - c:/Users/koled/Desktop/webdev/projects/bandmates/api/:/var/www/html
+  #   networks: 
+  #     - appnet
+  #   restart: unless-stopped
+  
+  # queue-worker:
+  #   build:
+  #     context: ./queue-worker
+  #     dockerfile: DockerFile
+  #   image: bandmates/queue-worker:1.0.0
+  #   volumes: 
+  #     - c:/Users/koled/Desktop/webdev/projects/bandmates/api/:/var/www/html
+  #   networks: 
+  #     - appnet
+  #   depends_on:
+  #     - php-fpm
+  #   restart: unless-stopped
+  
+  mysql-svc:
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    image: creating_digital/mysql:1.0.0
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db
+    ports:
+      - 3306:3306
+    networks: 
+      - appnet
+    restart: unless-stopped
+
+  # redis:
+  #   image: redis:5.0.0-alpine
+  #   networks: 
+  #     - appnet  
+  #   volumes:
+  #     - redis_data:/data
+  #   restart: unless-stopped
+
+volumes:
+  mysql_data:
+  # redis_data:
+
+networks: 
+  appnet:
