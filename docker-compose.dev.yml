@@ -22,7 +22,7 @@ services :
       dockerfile: ./docker/php-fpm/Dockerfile
       args: 
       - IS_DEV="true"
-    image: bandmates/php-fpm:1.1.0
+    image: creating_digital/php-fpm:1.0.0
     volumes: 
       - c:/Users/koled/dev/projects/github.com/creating_digital/interview/app/:/var/www/html
     networks: 

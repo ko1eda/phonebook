@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return redirect()->route('phonebook.index');
+})->name('home');
+
+
+// Resource route for phonebook
+Route::Resource("phonebook", "PhonebookController");
