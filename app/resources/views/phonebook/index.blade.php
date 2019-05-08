@@ -3,10 +3,13 @@
 
     <h1 class="tw-text-red">Entries</h1>
     
-    @foreach ($entries as $entry)
+    <phonebook-index></phonebook-index>
+
+    
+    {{-- @foreach ($entries as $entry)
 
         <p>{{ $entry }}</p>
 
-    @endforeach
+    @endforeach --}}
 
 @endsection

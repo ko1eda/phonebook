@@ -18,7 +18,10 @@
 </head>
 <body>
   <div id="app">
-    {{-- @include('shared.navbar') --}}
+    @include('partials.navbar')
+
+    {{-- add extra section for spacing --}}
+    <div class="section"></div>
 
     <main class="section">
       <div class="container">

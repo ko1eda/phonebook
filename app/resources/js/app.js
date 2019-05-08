@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
+import Navbar from "./components/nav/Navbar.vue";
+import PhonebookIndex from "./pages/phonebook/index.vue";
 
 window._ = require('lodash');
 
@@ -32,5 +34,8 @@ if (token) {
  */
 const app = new Vue({
     el: '#app',
-    components: {}
+    components: {
+        Navbar,
+        PhonebookIndex
+    }
 });
