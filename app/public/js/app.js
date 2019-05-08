@@ -1846,6 +1846,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1873,7 +1883,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     // Removes the object at a given index by merging the two halfs of the array split at the given index.
-    removeAtIndex: function removeAtIndex(index) {
+    removeAtIndex: function removeAtIndex(index, id) {
       var fhalf = this.entries.slice(0, index);
       var shalf = this.entries.slice(index + 1);
       this.entries = fhalf.concat(shalf); // have this function take an ID paramater
@@ -1882,13 +1892,16 @@ __webpack_require__.r(__webpack_exports__);
     add: function add() {
       this.adding = true;
     },
-    edit: function edit() {
+    // open the editor at the given index
+    editAtIndex: function editAtIndex(index, id) {
       this.editing = true;
+      this.editingIndex = index;
     },
     // cancel any editing that has been done
     cancel: function cancel() {
       this.adding = false;
-      this.editing = false; // reset the form 
+      this.editing = false;
+      this.editingIndex = null; // reset the form 
 
       this.form = {
         first_name: "",
@@ -19679,31 +19692,157 @@ var render = function() {
         "tbody",
         [
           _vm._l(_vm.entries, function(entry, index) {
-            return _c("tr", { key: index }, [
-              _c("td", [_vm._v(" " + _vm._s(entry.first_name) + " ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" " + _vm._s(entry.last_name) + " ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" " + _vm._s(entry.phone) + " ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" " + _vm._s(entry.email) + " ")]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._m(0, true),
-                _vm._v(" "),
-                _c(
-                  "span",
-                  {
-                    on: {
-                      click: function($event) {
-                        return _vm.removeAtIndex(index)
-                      }
-                    }
-                  },
-                  [_c("a", { staticClass: "delete is-small tw-bg-red" })]
-                )
-              ])
-            ])
+            return [
+              index === _vm.editingIndex && _vm.editing === true
+                ? _c("tr", { key: index }, [
+                    _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.first_name,
+                            expression: "form.first_name"
+                          }
+                        ],
+                        staticClass: "input is-small",
+                        attrs: { type: "text", placeholder: "Text input" },
+                        domProps: { value: _vm.form.first_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "first_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.last_name,
+                            expression: "form.last_name"
+                          }
+                        ],
+                        staticClass: "input is-small",
+                        attrs: { type: "text", placeholder: "Text input" },
+                        domProps: { value: _vm.form.last_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "last_name", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.phone,
+                            expression: "form.phone"
+                          }
+                        ],
+                        staticClass: "input is-small",
+                        attrs: { type: "text", placeholder: "Text input" },
+                        domProps: { value: _vm.form.phone },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "phone", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.email,
+                            expression: "form.email"
+                          }
+                        ],
+                        staticClass: "input is-small",
+                        attrs: { type: "text", placeholder: "Text input" },
+                        domProps: { value: _vm.form.email },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "email", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { on: { click: _vm.cancel } }, [
+                        _c("a", { staticClass: "delete is-small tw-bg-red" })
+                      ])
+                    ])
+                  ])
+                : _c("tr", { key: index }, [
+                    _c("td", [_vm._v(" " + _vm._s(entry.first_name) + " ")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(" " + _vm._s(entry.last_name) + " ")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(" " + _vm._s(entry.phone) + " ")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(" " + _vm._s(entry.email) + " ")]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "span",
+                        {
+                          on: {
+                            click: function($event) {
+                              return _vm.editAtIndex(index, entry.id)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass:
+                              "fas fa-edit tw-text-blue tw-cursor-pointer tw-mr-1",
+                            attrs: { alt: "add new entry" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          on: {
+                            click: function($event) {
+                              return _vm.removeAtIndex(index, entry.id)
+                            }
+                          }
+                        },
+                        [_c("a", { staticClass: "delete is-small tw-bg-red" })]
+                      )
+                    ])
+                  ])
+            ]
           }),
           _vm._v(" "),
           _vm.adding
@@ -19817,19 +19956,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", [
-      _c("i", {
-        staticClass: "fas fa-edit tw-text-blue tw-cursor-pointer tw-mr-1",
-        attrs: { alt: "add new entry" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
