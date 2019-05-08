@@ -1,8 +1,8 @@
 @extends("layouts.app")
 @section("content")
 
-    <h1 class="tw-text-red">Entries</h1>
-    
+    {{-- <h1 class="tw-text-indigo">Entries</h1> --}}
+
     <phonebook-index></phonebook-index>
 
     
