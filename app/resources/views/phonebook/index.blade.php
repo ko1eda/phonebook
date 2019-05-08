@@ -12,7 +12,7 @@
 
     @foreach ($entries as $entry)
 
-        <p>{{ $entry->phone }}</p>
+        <p>{{ $entry }}</p>
 
     @endforeach
 
