@@ -11,58 +11,54 @@
     </div>
 
     <!-- Begin table -->
-    <table class="table is-fullwidth">
-    <thead>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>
-          <template v-if="adding || editing">
-             <span @click="add"><i class="fas fa-plus tw-text-grey-light tw-cursor-pointer" alt="add new entry"></i></span>
-          </template>
-
-          <template v-else>
+    <div class="table-container">
+      <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>First</th>
+          <th>Last</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>
             <span @click="add"><i class="fas fa-plus tw-text-green tw-cursor-pointer" alt="add new entry"></i></span>
-          </template>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-
-      <!-- Display all entries from entries array, if editing, display a form only for that array -->
-      <template v-for="(entry, index) in entries" >
-        <tr v-if="index === editingIndex && editing === true" :key="index">
-          <td> <input class="input is-small" type="text" placeholder="Text input" v-model="form.first_name"></td>
-          <td> <input class="input is-small" type="text" placeholder="Text input" v-model="form.last_name"> </td>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+  
+        <!-- Display all entries from entries array, if editing, display a form only for that array -->
+        <template v-for="(entry, index) in entries" >
+          <tr v-if="index === editingIndex && editing === true" :key="index">
+            <td> <input class="input is-small" type="text" placeholder="Text input" v-model="form.first_name"></td>
+            <td> <input class="input is-small" type="text" placeholder="Text input" v-model="form.last_name"> </td>
+            <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.phone"></td>
+            <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.email"></td>
+            <td><span @click="cancel"><a class="delete is-small tw-bg-red"></a></span></td>
+          </tr>
+          <tr v-else :key="index">
+            <td> {{ entry.first_name }} </td>
+            <td> {{ entry.last_name }} </td>
+            <td> {{ entry.phone }} </td>
+            <td> {{ entry.email }} </td>
+            <td>
+              <span @click="editAtIndex(index, entry.id)"><i class="fas fa-edit tw-text-blue tw-cursor-pointer tw-mr-1" alt="add new entry"></i></span>
+              <span @click="removeAtIndex(index, entry.id)"><a class="delete is-small tw-bg-red"></a></span>
+            </td>
+          </tr>
+        </template>
+  
+        <!-- Display a new row to be filled with data if adding === true-->
+        <tr v-if="adding">
+          <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.first_name"></td>
+          <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.last_name"></td>
           <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.phone"></td>
           <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.email"></td>
           <td><span @click="cancel"><a class="delete is-small tw-bg-red"></a></span></td>
         </tr>
-        <tr v-else :key="index">
-          <td> {{ entry.first_name }} </td>
-          <td> {{ entry.last_name }} </td>
-          <td> {{ entry.phone }} </td>
-          <td> {{ entry.email }} </td>
-          <td>
-            <span @click="editAtIndex(index, entry.id)"><i class="fas fa-edit tw-text-blue tw-cursor-pointer tw-mr-1" alt="add new entry"></i></span>
-            <span @click="removeAtIndex(index, entry.id)"><a class="delete is-small tw-bg-red"></a></span>
-          </td>
-        </tr>
-      </template>
-
-      <!-- Display a new row to be filled with data if adding === true-->
-      <tr v-if="adding">
-        <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.first_name"></td>
-        <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.last_name"></td>
-        <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.phone"></td>
-        <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.email"></td>
-        <td><span @click="cancel"><a class="delete is-small tw-bg-red"></a></span></td>
-      </tr>
-  
-    </tbody>
-  </table>
+    
+      </tbody>
+    </table>
+  </div>
 </div>
 </template>
 
@@ -144,8 +140,8 @@ export default {
       this.clearForm();
     },
 
+    // Submit an edit
     submitEdit() {
-      // axios.patch("/phonebook/")
       axios.patch(`/phonebook/${this.editingId}`, this.form)
         .then(({data}) => {
           let fhalf = this.entries.slice(0, this.editingIndex);
@@ -161,6 +157,7 @@ export default {
         .catch(error => console.log(error));
     },
 
+    // Submit a new entry
     submitEntry() {
       axios.post("/phonebook", this.form)
         .then(({data}) => {
@@ -170,7 +167,7 @@ export default {
         .catch(error => console.log(error));
     },
 
-    // clear the form
+    // clear the submission form
     clearForm() {
       this.form = {
         first_name : "",
