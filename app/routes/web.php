@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect()->route('phonebook.index');
+    return view("phonebook.index");
 })->name('home');
 
 

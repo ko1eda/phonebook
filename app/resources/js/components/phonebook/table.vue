@@ -7,7 +7,7 @@
       <button 
         v-if="editing || adding"
         class="button is-small tw-bg-indigo tw-text-white"
-        @click="editing ? submitEdit : submitEntry">Submit</button>
+        @click="editing ? submitEdit() : submitEntry()">Submit</button>
     </div>
 
     <!-- Begin table -->
@@ -19,7 +19,13 @@
         <th>Phone</th>
         <th>Email</th>
         <th>
-          <span @click="add"><i class="fas fa-plus tw-text-green tw-cursor-pointer" alt="add new entry"></i></span>
+          <template v-if="adding || editing">
+             <span @click="add"><i class="fas fa-plus tw-text-grey-light tw-cursor-pointer" alt="add new entry"></i></span>
+          </template>
+
+          <template v-else>
+            <span @click="add"><i class="fas fa-plus tw-text-green tw-cursor-pointer" alt="add new entry"></i></span>
+          </template>
         </th>
       </tr>
     </thead>
@@ -48,8 +54,8 @@
 
       <!-- Display a new row to be filled with data if adding === true-->
       <tr v-if="adding">
-        <td> <input class="input is-small" type="text" placeholder="Text input" v-model="form.first_name"></td>
-        <td> <input class="input is-small" type="text" placeholder="Text input" v-model="form.last_name"> </td>
+        <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.first_name"></td>
+        <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.last_name"></td>
         <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.phone"></td>
         <td><input class="input is-small" type="text" placeholder="Text input" v-model="form.email"></td>
         <td><span @click="cancel"><a class="delete is-small tw-bg-red"></a></span></td>
@@ -64,13 +70,12 @@
 export default {
   data() {
     return {
-      entries : [
-        {first_name : "cool", last_name: "beans", phone : "9148133697", email: "test@test.com"},
-        {first_name : "fool", last_name: "beans", phone : "9148133697", email: "test@test.com"},
-      ],
+      entries : [],
       adding : false,
+
       editing : false,
       editingIndex: null,
+      editingId: null,
 
       form : {
         first_name : "",
@@ -81,30 +86,54 @@ export default {
     }
   },
 
+  
+  mounted() {
+    axios.get("/phonebook")
+      .then(({data}) => this.entries = data.data)
+      .catch(error => console.log(error));
+  },
+
   methods : {
     // Removes the object at a given index by merging the two halfs of the array split at the given index.
     removeAtIndex(index, id) {
-      let fhalf = this.entries.slice(0, index);
+      axios.delete(`/phonebook/${id}`)
+        .then(() => {
+          let fhalf = this.entries.slice(0, index);
 
-      let shalf = this.entries.slice(index + 1);
+          let shalf = this.entries.slice(index + 1);
 
-      this.entries = fhalf.concat(shalf);
-
-      // have this function take an ID paramater
-      // axios.delete(/id)
+          this.entries = fhalf.concat(shalf);
+        })
+        .catch(error => console.log(error))
     },
 
+    // Sets adding to true
     add() {
+      // if we are editing or adding already, disable the button
+      if (this.editing || this.adding) return;
+
       this.adding = true;
     },
 
     // open the editor at the given index
     editAtIndex(index, id) {
+      // if we are editing or adding already, disable the button
+      if (this.editing || this.adding) return;
+
       this.editing = true;
       this.editingIndex = index;
+      this.editingId = id;
+
+      // Set the form equal to the object we are editing
+      this.form = {
+        first_name : this.entries[index].first_name,
+        last_name : this.entries[index].last_name,
+        phone : this.entries[index].phone,
+        email : this.entries[index].email
+      };
     },
     
-    // cancel any editing that has been done
+    // cancel any editing that has been done and clear form
     cancel() {
       this.adding = false;
 
@@ -112,22 +141,45 @@ export default {
 
       this.editingIndex = null;
 
-      // reset the form 
+      this.clearForm();
+    },
+
+    submitEdit() {
+      // axios.patch("/phonebook/")
+      axios.patch(`/phonebook/${this.editingId}`, this.form)
+        .then(({data}) => {
+          let fhalf = this.entries.slice(0, this.editingIndex);
+
+          fhalf.push(data.data);
+
+          let shalf = this.entries.slice(this.editingIndex + 1);
+
+          this.entries = fhalf.concat(shalf);
+
+          this.cancel()
+        })
+        .catch(error => console.log(error));
+    },
+
+    submitEntry() {
+      axios.post("/phonebook", this.form)
+        .then(({data}) => {
+          this.entries = this.entries.concat(data.data);
+          this.cancel()
+        })
+        .catch(error => console.log(error));
+    },
+
+    // clear the form
+    clearForm() {
       this.form = {
         first_name : "",
         last_name : "",
         phone : "",
         email : "",
       };
-    },
+    }
 
-    submitEdit() {
-      // axios call to editing endpoint
-    },
-
-    submitEntry() {
-      // axios call to submit endpoint
-    },
   }
 }
 </script>

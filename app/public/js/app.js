@@ -1856,23 +1856,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      entries: [{
-        first_name: "cool",
-        last_name: "beans",
-        phone: "9148133697",
-        email: "test@test.com"
-      }, {
-        first_name: "fool",
-        last_name: "beans",
-        phone: "9148133697",
-        email: "test@test.com"
-      }],
+      entries: [],
       adding: false,
       editing: false,
       editingIndex: null,
+      editingId: null,
       form: {
         first_name: "",
         last_name: "",
@@ -1881,38 +1878,99 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("/phonebook").then(function (_ref) {
+      var data = _ref.data;
+      return _this.entries = data.data;
+    })["catch"](function (error) {
+      return console.log(error);
+    });
+  },
   methods: {
     // Removes the object at a given index by merging the two halfs of the array split at the given index.
     removeAtIndex: function removeAtIndex(index, id) {
-      var fhalf = this.entries.slice(0, index);
-      var shalf = this.entries.slice(index + 1);
-      this.entries = fhalf.concat(shalf); // have this function take an ID paramater
-      // axios.delete(/id)
+      var _this2 = this;
+
+      axios["delete"]("/phonebook/".concat(id)).then(function () {
+        var fhalf = _this2.entries.slice(0, index);
+
+        var shalf = _this2.entries.slice(index + 1);
+
+        _this2.entries = fhalf.concat(shalf);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     },
+    // Sets adding to true
     add: function add() {
+      // if we are editing or adding already, disable the button
+      if (this.editing || this.adding) return;
       this.adding = true;
     },
     // open the editor at the given index
     editAtIndex: function editAtIndex(index, id) {
+      // if we are editing or adding already, disable the button
+      if (this.editing || this.adding) return;
       this.editing = true;
       this.editingIndex = index;
+      this.editingId = id; // Set the form equal to the object we are editing
+
+      this.form = {
+        first_name: this.entries[index].first_name,
+        last_name: this.entries[index].last_name,
+        phone: this.entries[index].phone,
+        email: this.entries[index].email
+      };
     },
-    // cancel any editing that has been done
+    // cancel any editing that has been done and clear form
     cancel: function cancel() {
       this.adding = false;
       this.editing = false;
-      this.editingIndex = null; // reset the form 
+      this.editingIndex = null;
+      this.clearForm();
+    },
+    submitEdit: function submitEdit() {
+      var _this3 = this;
 
+      // axios.patch("/phonebook/")
+      axios.patch("/phonebook/".concat(this.editingId), this.form).then(function (_ref2) {
+        var data = _ref2.data;
+
+        var fhalf = _this3.entries.slice(0, _this3.editingIndex);
+
+        fhalf.push(data.data);
+
+        var shalf = _this3.entries.slice(_this3.editingIndex + 1);
+
+        _this3.entries = fhalf.concat(shalf);
+
+        _this3.cancel();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    submitEntry: function submitEntry() {
+      var _this4 = this;
+
+      axios.post("/phonebook", this.form).then(function (_ref3) {
+        var data = _ref3.data;
+        _this4.entries = _this4.entries.concat(data.data);
+
+        _this4.cancel();
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    // clear the form
+    clearForm: function clearForm() {
       this.form = {
         first_name: "",
         last_name: "",
         phone: "",
         email: ""
       };
-    },
-    submitEdit: function submitEdit() {// axios call to editing endpoint
-    },
-    submitEntry: function submitEntry() {// axios call to submit endpoint
     }
   }
 });
@@ -1937,6 +1995,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Table: _components_phonebook_table__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      entries: []
+    };
+  },
+  // Whenever the page is loaded, fetch all entries from the database
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("/phonebook").then(function (_ref) {
+      var data = _ref.data;
+      return _this.entries = data.data;
+    })["catch"](function (error) {
+      return console.log(error);
+    });
   }
 });
 
@@ -19656,7 +19730,7 @@ var render = function() {
                 staticClass: "button is-small tw-bg-indigo tw-text-white",
                 on: {
                   click: function($event) {
-                    _vm.editing ? _vm.submitEdit : _vm.submitEntry
+                    _vm.editing ? _vm.submitEdit() : _vm.submitEntry()
                   }
                 }
               },
@@ -19677,14 +19751,31 @@ var render = function() {
           _vm._v(" "),
           _c("th", [_vm._v("Email")]),
           _vm._v(" "),
-          _c("th", [
-            _c("span", { on: { click: _vm.add } }, [
-              _c("i", {
-                staticClass: "fas fa-plus tw-text-green tw-cursor-pointer",
-                attrs: { alt: "add new entry" }
-              })
-            ])
-          ])
+          _c(
+            "th",
+            [
+              _vm.adding || _vm.editing
+                ? [
+                    _c("span", { on: { click: _vm.add } }, [
+                      _c("i", {
+                        staticClass:
+                          "fas fa-plus tw-text-grey-light tw-cursor-pointer",
+                        attrs: { alt: "add new entry" }
+                      })
+                    ])
+                  ]
+                : [
+                    _c("span", { on: { click: _vm.add } }, [
+                      _c("i", {
+                        staticClass:
+                          "fas fa-plus tw-text-green tw-cursor-pointer",
+                        attrs: { alt: "add new entry" }
+                      })
+                    ])
+                  ]
+            ],
+            2
+          )
         ])
       ]),
       _vm._v(" "),
@@ -19978,7 +20069,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("Table")
+  return _c("Table", { attrs: { "props-data": _vm.entries } })
 }
 var staticRenderFns = []
 render._withStripped = true

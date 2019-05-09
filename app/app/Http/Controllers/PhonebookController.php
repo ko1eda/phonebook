@@ -12,13 +12,16 @@ class PhonebookController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index(Request $req)
     {
         $entries = Phonebook::all();
 
-        return view("phonebook.index", [
-            "entries" => $entries
-        ]);
+        // When we load the endpoint via ajax,
+        if ($req->wantsJson()) {
+            return response(["data" => $entries], 200);
+        }
+
+        return view("phonebook.index");
     }
 
  
