@@ -44,7 +44,7 @@ class PhonebookController extends Controller
     }
 
     /**
-     * Create a new phonebook entry
+     * Update a phonebook entry
      *
      * @param Request $req
      * @param Phonebook $phonebook
@@ -67,7 +67,7 @@ class PhonebookController extends Controller
     }
 
     /**
-     * Remove an entry from the phonebook
+     * Remove a phonebook entry
      *
      * @param Request $req
      * @param Phonebook $phonebook
