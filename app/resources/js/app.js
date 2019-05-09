@@ -2,6 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import Navbar from "./components/nav/Navbar.vue";
 import PhonebookIndex from "./pages/phonebook/index.vue";
+import FlashMessage from './components/flash/Flash';
 
 window._ = require('lodash');
 
@@ -28,6 +29,15 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+// Global Vue event bus
+window.events = new Vue;
+
+// Global flash function for emiting
+// flash messages 
+// level represents the type of message i.e info, danger, warning, etc
+window.flash = function(message, level = null) {
+  window.events.$emit('flashEvent', {message, level});
+}
 
 /**
  * Create a new Vue instance
@@ -36,6 +46,7 @@ const app = new Vue({
     el: '#app',
     components: {
         Navbar,
-        PhonebookIndex
+        PhonebookIndex,
+        FlashMessage
     }
 });

@@ -82,11 +82,11 @@ export default {
     }
   },
 
-  
+  // Load all entries when the component is mounted to the dom
   mounted() {
     axios.get("/phonebook")
       .then(({data}) => this.entries = data.data)
-      .catch(error => console.log(error));
+      .catch(error => flash('Could not load entries', "danger"));
   },
 
   methods : {
@@ -100,7 +100,7 @@ export default {
 
           this.entries = fhalf.concat(shalf);
         })
-        .catch(error => console.log(error))
+        .catch(error => flash('Deletion Error', "danger"))
     },
 
     // Sets adding to true
@@ -154,7 +154,7 @@ export default {
 
           this.cancel()
         })
-        .catch(error => console.log(error));
+        .catch(error => flash('Validation Error', "danger"));
     },
 
     // Submit a new entry
@@ -164,7 +164,7 @@ export default {
           this.entries = this.entries.concat(data.data);
           this.cancel()
         })
-        .catch(error => console.log(error));
+        .catch(error => flash('Validation Error', "danger"));
     },
 
     // clear the submission form
