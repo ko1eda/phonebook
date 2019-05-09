@@ -29,30 +29,6 @@ services :
       - appnet
     restart: unless-stopped
 
-  # workspace:
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/php-workspace/Dockerfile
-  #   image: bandmates/workspace:1.0.0
-  #   volumes: 
-  #     - c:/Users/koled/Desktop/webdev/projects/bandmates/api/:/var/www/html
-  #   networks: 
-  #     - appnet
-  #   restart: unless-stopped
-  
-  # queue-worker:
-  #   build:
-  #     context: ./queue-worker
-  #     dockerfile: DockerFile
-  #   image: bandmates/queue-worker:1.0.0
-  #   volumes: 
-  #     - c:/Users/koled/Desktop/webdev/projects/bandmates/api/:/var/www/html
-  #   networks: 
-  #     - appnet
-  #   depends_on:
-  #     - php-fpm
-  #   restart: unless-stopped
-  
   mysql-svc:
     build:
       context: .
