@@ -26,7 +26,7 @@ class PhonebookTest extends TestCase
 
 
         $this->get(route("phonebook.index"))
-            ->assertSee("8142729198");
+            ->assertJsonCount(2, "data");
     }
 
     public function test_it_stores_valid_phonebook_entries_in_the_database()
@@ -38,7 +38,7 @@ class PhonebookTest extends TestCase
             "first_name" => "first",
             "phone" => "9142729198",
             "email" => "testemail@email.com"
-        ])->assertRedirect(route("home"));
+        ]);
 
         // then it should persist the data to the database
         $this->assertCount(1, Phonebook::all());

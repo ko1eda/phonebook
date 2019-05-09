@@ -10,26 +10,20 @@ class PhonebookController extends Controller
     /**
      * index
      *
-     * @return void
+     * @return \Illuminate\Http\Response
      */
-    public function index(Request $req)
+    public function index()
     {
         $entries = Phonebook::all();
 
-        // When we load the endpoint via ajax,
-        if ($req->wantsJson()) {
-            return response(["data" => $entries], 200);
-        }
-
-        return view("phonebook.index");
+        return response(["data" => $entries], 200);
     }
 
- 
     /**
      * Create a new phonebook entry
      *
      * @param Request $req
-     * @return void
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $req)
     {
@@ -44,21 +38,15 @@ class PhonebookController extends Controller
         // store the validated entry in the db
         $entry = Phonebook::create($v);
 
-        // if we get an ajax request return the new entry and 200 status code
-        if ($req->wantsJson()) {
-            return response(["data" => $entry], 200);
-        }
-
-
-        return redirect()
-            ->route("home");
+        return response(["data" => $entry], 200);
     }
 
     /**
      * Create a new phonebook entry
      *
      * @param Request $req
-     * @return void
+     * @param Phonebook $phonebook
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $req, Phonebook $phonebook)
     {
@@ -73,31 +61,20 @@ class PhonebookController extends Controller
         // store the validated entry in the db
         $phonebook->update($v);
 
-        // if we get an ajax request return the updated entry and 200 status code
-        if ($req->wantsJson()) {
-            return response(["data" => $phonebook], 200);
-        }
-
-        return redirect()
-            ->route("home");
+        return response(["data" => $phonebook], 200);
     }
 
     /**
      * Remove an entry from the phonebook
      *
      * @param Request $req
-     * @param Phonebook $p
+     * @param Phonebook $phonebook
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $req, Phonebook $phonebook)
+    public function destroy(Phonebook $phonebook)
     {
         $phonebook->delete();
 
-        if ($req->wantsJson()) {
-            return response([], 204);
-        }
-
-        return redirect()
-            ->route("home");
+        return response([], 204);
     }
 }

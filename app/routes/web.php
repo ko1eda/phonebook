@@ -17,4 +17,4 @@ Route::get('/', function () {
 
 
 // Resource route for phonebook
-Route::Resource("phonebook", "PhonebookController");
+Route::Resource("phonebook", "PhonebookController")->except(["create", "edit", "show"]);
