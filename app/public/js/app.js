@@ -1858,10 +1858,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1931,10 +1927,10 @@ __webpack_require__.r(__webpack_exports__);
       this.editingIndex = null;
       this.clearForm();
     },
+    // Submit an edit
     submitEdit: function submitEdit() {
       var _this3 = this;
 
-      // axios.patch("/phonebook/")
       axios.patch("/phonebook/".concat(this.editingId), this.form).then(function (_ref2) {
         var data = _ref2.data;
 
@@ -1951,6 +1947,7 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(error);
       });
     },
+    // Submit a new entry
     submitEntry: function submitEntry() {
       var _this4 = this;
 
@@ -1963,7 +1960,7 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(error);
       });
     },
-    // clear the form
+    // clear the submission form
     clearForm: function clearForm() {
       this.form = {
         first_name: "",
@@ -19662,7 +19659,7 @@ var staticRenderFns = [
               },
               [
                 _vm._v("\n        Phonebook "),
-                _c("span", { staticClass: "tw-text-sm tw-mt-3" }, [
+                _c("span", { staticClass: "tw-text-sm tw-mt-2 md:tw-mt-4" }, [
                   _vm._v("App")
                 ])
               ]
@@ -19740,310 +19737,303 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("table", { staticClass: "table is-fullwidth" }, [
-      _c("thead", [
-        _c("tr", [
-          _c("th", [_vm._v("First Name")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Last Name")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Phone")]),
-          _vm._v(" "),
-          _c("th", [_vm._v("Email")]),
-          _vm._v(" "),
-          _c(
-            "th",
-            [
-              _vm.adding || _vm.editing
-                ? [
-                    _c("span", { on: { click: _vm.add } }, [
-                      _c("i", {
-                        staticClass:
-                          "fas fa-plus tw-text-grey-light tw-cursor-pointer",
-                        attrs: { alt: "add new entry" }
-                      })
-                    ])
-                  ]
-                : [
-                    _c("span", { on: { click: _vm.add } }, [
-                      _c("i", {
-                        staticClass:
-                          "fas fa-plus tw-text-green tw-cursor-pointer",
-                        attrs: { alt: "add new entry" }
-                      })
-                    ])
-                  ]
-            ],
-            2
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "tbody",
-        [
-          _vm._l(_vm.entries, function(entry, index) {
-            return [
-              index === _vm.editingIndex && _vm.editing === true
-                ? _c("tr", { key: index }, [
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.first_name,
-                            expression: "form.first_name"
-                          }
-                        ],
-                        staticClass: "input is-small",
-                        attrs: { type: "text", placeholder: "Text input" },
-                        domProps: { value: _vm.form.first_name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+    _c("div", { staticClass: "table-container" }, [
+      _c("table", { staticClass: "table is-fullwidth" }, [
+        _c("thead", [
+          _c("tr", [
+            _c("th", [_vm._v("First")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Last")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Phone")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Email")]),
+            _vm._v(" "),
+            _c("th", [
+              _c("span", { on: { click: _vm.add } }, [
+                _c("i", {
+                  staticClass: "fas fa-plus tw-text-green tw-cursor-pointer",
+                  attrs: { alt: "add new entry" }
+                })
+              ])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          [
+            _vm._l(_vm.entries, function(entry, index) {
+              return [
+                index === _vm.editingIndex && _vm.editing === true
+                  ? _c("tr", { key: index }, [
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.first_name,
+                              expression: "form.first_name"
                             }
-                            _vm.$set(
-                              _vm.form,
-                              "first_name",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.last_name,
-                            expression: "form.last_name"
-                          }
-                        ],
-                        staticClass: "input is-small",
-                        attrs: { type: "text", placeholder: "Text input" },
-                        domProps: { value: _vm.form.last_name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                          ],
+                          staticClass: "input is-small",
+                          attrs: { type: "text", placeholder: "Text input" },
+                          domProps: { value: _vm.form.first_name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "first_name",
+                                $event.target.value
+                              )
                             }
-                            _vm.$set(_vm.form, "last_name", $event.target.value)
                           }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.phone,
-                            expression: "form.phone"
-                          }
-                        ],
-                        staticClass: "input is-small",
-                        attrs: { type: "text", placeholder: "Text input" },
-                        domProps: { value: _vm.form.phone },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.last_name,
+                              expression: "form.last_name"
                             }
-                            _vm.$set(_vm.form, "phone", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.email,
-                            expression: "form.email"
-                          }
-                        ],
-                        staticClass: "input is-small",
-                        attrs: { type: "text", placeholder: "Text input" },
-                        domProps: { value: _vm.form.email },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                          ],
+                          staticClass: "input is-small",
+                          attrs: { type: "text", placeholder: "Text input" },
+                          domProps: { value: _vm.form.last_name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "last_name",
+                                $event.target.value
+                              )
                             }
-                            _vm.$set(_vm.form, "email", $event.target.value)
                           }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("span", { on: { click: _vm.cancel } }, [
-                        _c("a", { staticClass: "delete is-small tw-bg-red" })
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.phone,
+                              expression: "form.phone"
+                            }
+                          ],
+                          staticClass: "input is-small",
+                          attrs: { type: "text", placeholder: "Text input" },
+                          domProps: { value: _vm.form.phone },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "phone", $event.target.value)
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.email,
+                              expression: "form.email"
+                            }
+                          ],
+                          staticClass: "input is-small",
+                          attrs: { type: "text", placeholder: "Text input" },
+                          domProps: { value: _vm.form.email },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "email", $event.target.value)
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("span", { on: { click: _vm.cancel } }, [
+                          _c("a", { staticClass: "delete is-small tw-bg-red" })
+                        ])
                       ])
                     ])
-                  ])
-                : _c("tr", { key: index }, [
-                    _c("td", [_vm._v(" " + _vm._s(entry.first_name) + " ")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(" " + _vm._s(entry.last_name) + " ")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(" " + _vm._s(entry.phone) + " ")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(" " + _vm._s(entry.email) + " ")]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "span",
-                        {
-                          on: {
-                            click: function($event) {
-                              return _vm.editAtIndex(index, entry.id)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass:
-                              "fas fa-edit tw-text-blue tw-cursor-pointer tw-mr-1",
-                            attrs: { alt: "add new entry" }
-                          })
-                        ]
-                      ),
+                  : _c("tr", { key: index }, [
+                      _c("td", [_vm._v(" " + _vm._s(entry.first_name) + " ")]),
                       _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          on: {
-                            click: function($event) {
-                              return _vm.removeAtIndex(index, entry.id)
+                      _c("td", [_vm._v(" " + _vm._s(entry.last_name) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(entry.phone) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(entry.email) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "span",
+                          {
+                            on: {
+                              click: function($event) {
+                                return _vm.editAtIndex(index, entry.id)
+                              }
                             }
+                          },
+                          [
+                            _c("i", {
+                              staticClass:
+                                "fas fa-edit tw-text-blue tw-cursor-pointer tw-mr-1",
+                              attrs: { alt: "add new entry" }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            on: {
+                              click: function($event) {
+                                return _vm.removeAtIndex(index, entry.id)
+                              }
+                            }
+                          },
+                          [
+                            _c("a", {
+                              staticClass: "delete is-small tw-bg-red"
+                            })
+                          ]
+                        )
+                      ])
+                    ])
+              ]
+            }),
+            _vm._v(" "),
+            _vm.adding
+              ? _c("tr", [
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.first_name,
+                          expression: "form.first_name"
+                        }
+                      ],
+                      staticClass: "input is-small",
+                      attrs: { type: "text", placeholder: "Text input" },
+                      domProps: { value: _vm.form.first_name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
                           }
-                        },
-                        [_c("a", { staticClass: "delete is-small tw-bg-red" })]
-                      )
+                          _vm.$set(_vm.form, "first_name", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.last_name,
+                          expression: "form.last_name"
+                        }
+                      ],
+                      staticClass: "input is-small",
+                      attrs: { type: "text", placeholder: "Text input" },
+                      domProps: { value: _vm.form.last_name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "last_name", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.phone,
+                          expression: "form.phone"
+                        }
+                      ],
+                      staticClass: "input is-small",
+                      attrs: { type: "text", placeholder: "Text input" },
+                      domProps: { value: _vm.form.phone },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "phone", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.email,
+                          expression: "form.email"
+                        }
+                      ],
+                      staticClass: "input is-small",
+                      attrs: { type: "text", placeholder: "Text input" },
+                      domProps: { value: _vm.form.email },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "email", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("span", { on: { click: _vm.cancel } }, [
+                      _c("a", { staticClass: "delete is-small tw-bg-red" })
                     ])
                   ])
-            ]
-          }),
-          _vm._v(" "),
-          _vm.adding
-            ? _c("tr", [
-                _c("td", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.first_name,
-                        expression: "form.first_name"
-                      }
-                    ],
-                    staticClass: "input is-small",
-                    attrs: { type: "text", placeholder: "Text input" },
-                    domProps: { value: _vm.form.first_name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "first_name", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.last_name,
-                        expression: "form.last_name"
-                      }
-                    ],
-                    staticClass: "input is-small",
-                    attrs: { type: "text", placeholder: "Text input" },
-                    domProps: { value: _vm.form.last_name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "last_name", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.phone,
-                        expression: "form.phone"
-                      }
-                    ],
-                    staticClass: "input is-small",
-                    attrs: { type: "text", placeholder: "Text input" },
-                    domProps: { value: _vm.form.phone },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "phone", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.email,
-                        expression: "form.email"
-                      }
-                    ],
-                    staticClass: "input is-small",
-                    attrs: { type: "text", placeholder: "Text input" },
-                    domProps: { value: _vm.form.email },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "email", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { on: { click: _vm.cancel } }, [
-                    _c("a", { staticClass: "delete is-small tw-bg-red" })
-                  ])
                 ])
-              ])
-            : _vm._e()
-        ],
-        2
-      )
+              : _vm._e()
+          ],
+          2
+        )
+      ])
     ])
   ])
 }

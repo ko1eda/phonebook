@@ -14,8 +14,6 @@ html {
 @import "~bulma/sass/utilities/_all.sass";
 
 // Import custom color overrides
-// Any variables you want to change should go here (see import order issues here https://github.com/jgthms/bulma/issues/1651)
-// Bulma components use !important so all style overrides have to go before the component imports
 @import '../sass/bulma/theme';
 
 
@@ -26,7 +24,6 @@ html {
 
 
 // Bulma layout and grid
-@import "~bulma/sass/grid/_all.sass";
 @import "~bulma/sass/layout/section.sass";
 
 
