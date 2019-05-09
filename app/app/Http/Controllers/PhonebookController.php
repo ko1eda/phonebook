@@ -28,11 +28,13 @@ class PhonebookController extends Controller
     public function store(Request $req)
     {
         // validate the incoming request before we store it
+        // 'phone' => 'required|string|regex:/[0-9]{10}/' if phone # needs to be validated
+        // see https://stackoverflow.com/questions/36777840/how-to-validate-phone-number-in-laravel-5-2
         $v = $req->validate([
             'last_name' => 'string|required|max:255',
             'first_name' => 'string|required|max:255',
             'email' => 'required|string|email|max:255',
-            'phone' => 'required|string|numeric|min:10'
+            'phone' => 'required|string|min:10'
         ]);
 
         // store the validated entry in the db
@@ -55,7 +57,7 @@ class PhonebookController extends Controller
             'last_name' => 'string|max:255',
             'first_name' => 'string|max:255',
             'email' => 'string|email|max:255',
-            'phone' => 'string|numeric|min:10'
+            'phone' => 'string|min:10'
         ]);
 
         // store the validated entry in the db
