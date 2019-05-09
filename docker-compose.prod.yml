@@ -7,7 +7,7 @@ services :
       dockerfile: ./docker/nginx-dev/Dockerfile
     image: creating_digital/nginx:1.0.0
     volumes: 
-      - c:/Users/koled/dev/projects/github.com/creating_digital/interview/app/:/var/www/html
+      - /srv/phonebook/app/:/var/www/html:/var/www/html
     ports:
       - 80:80
     networks: 
@@ -22,7 +22,7 @@ services :
       dockerfile: ./docker/php-fpm/Dockerfile
     image: creating_digital/php-fpm:1.0.0
     volumes: 
-      - c:/Users/koled/dev/projects/github.com/creating_digital/interview/app/:/var/www/html
+      - /srv/phonebook/app/:/var/www/html
     networks: 
       - appnet
     restart: unless-stopped
@@ -35,7 +35,7 @@ services :
     volumes:
       - mysql_data:/var/lib/mysql
     environment: 
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root # would never do this on a real server but for sake of brevity
       - MYSQL_DATABASE=db
     ports:
       - 3306:3306
@@ -43,17 +43,8 @@ services :
       - appnet
     restart: unless-stopped
 
-  # redis:
-  #   image: redis:5.0.0-alpine
-  #   networks: 
-  #     - appnet  
-  #   volumes:
-  #     - redis_data:/data
-  #   restart: unless-stopped
-
 volumes:
   mysql_data:
-  # redis_data:
 
 networks: 
   appnet:
