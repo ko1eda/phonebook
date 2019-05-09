@@ -63,8 +63,6 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm /var/log/lastlog /var/log/faillog
 
-# COPY ./test-app /var/www/html
-
 RUN usermod -u 1001 www-data && \ 
     groupmod -g 1001 www-data && \
     chown -R www-data: /var/www && \ 
