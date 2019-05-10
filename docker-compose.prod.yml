@@ -7,7 +7,7 @@ services :
       dockerfile: ./docker/nginx-dev/Dockerfile
     image: creating_digital/nginx:1.0.0
     volumes: 
-      - /srv/phonebook/app/:/var/www/html:/var/www/html
+      - /srv/phonebook/app/:/var/www/html
     ports:
       - 80:80
     networks: 

@@ -20,7 +20,7 @@
           <th>Phone</th>
           <th>Email</th>
           <th>
-            <span @click="add"><i class="fas fa-plus tw-text-green tw-cursor-pointer" alt="add new entry"></i></span>
+            <span @click="add"><i class="fas fa-plus tw-text-green tw-cursor-pointer"></i></span>
           </th>
         </tr>
       </thead>
@@ -41,7 +41,7 @@
             <td> {{ entry.phone }} </td>
             <td> {{ entry.email }} </td>
             <td>
-              <span @click="editAtIndex(index, entry.id)"><i class="fas fa-edit tw-text-blue tw-cursor-pointer tw-mr-1" alt="add new entry"></i></span>
+              <span @click="editAtIndex(index, entry.id)"><i class="fas fa-edit tw-text-blue tw-cursor-pointer tw-mr-1"></i></span>
               <span @click="removeAtIndex(index, entry.id)"><a class="delete is-small tw-bg-red"></a></span>
             </td>
           </tr>
